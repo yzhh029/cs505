@@ -9,12 +9,14 @@ public class CoarseIntSet implements IntSet {
 	private Node head;
 	private Lock lock;
 	private Random rand;
+	private int size;
 	
 	public CoarseIntSet() {
 		Node.withLock = false;
 		head = new Node();
 		lock = new ReentrantLock();
 		rand = new Random();
+		size = 0;
 	}
 	
 	public CoarseIntSet(int initSize) {
@@ -22,11 +24,9 @@ public class CoarseIntSet implements IntSet {
 		
 		Node curr = head;
 		int range = initSize * 2;
-		for (int i = 0; i < initSize; ++i) {
-			Node temp = new Node(rand.nextInt(range));
-			curr.next = temp;
-			curr = temp;
-		}
+		
+		while (size < initSize)
+			insert(rand.nextInt(range));
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class CoarseIntSet implements IntSet {
 			
 			temp.next = curr;
 			pred.next = temp;
-			
+			++size;
 			return true; 
 		} finally {
 			lock.unlock();
@@ -79,6 +79,7 @@ public class CoarseIntSet implements IntSet {
 			else if (curr.value == x) {
 				pred.next = curr.next;
 				curr.next = null;
+				--size;
 				return true;
 			} else {
 				return false;
@@ -115,8 +116,12 @@ public class CoarseIntSet implements IntSet {
 		
 	}
 	
+	public int getSize() {
+		return size;
+	}
+	
 	private boolean isEmpty() {
-		return head.next == null;
+		return size == 0;
 	}
 
 }
