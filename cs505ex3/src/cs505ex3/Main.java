@@ -11,7 +11,7 @@ public class Main {
 		//IntSet iset = new CoarseIntSet(opt.getInitSize());
 		IntSet iset = IntSetFactory.getIntSet(opt.getSetType(), opt.getInitSize());
 
-		ArrayList<TestWorker> workers = new ArrayList();
+		ArrayList<TestWorker> workers = new ArrayList<>();
 		Stat stat = new Stat();
 		
 		for (int i = 0; i < opt.getNumTh(); ++i)
@@ -32,7 +32,7 @@ public class Main {
 		}
 		
 		for (TestWorker worker : workers) {
-			worker.stopRunning();;
+			worker.stopRunning();
 		}
 		
 		stat.end = System.currentTimeMillis();

@@ -8,7 +8,7 @@ public class IntSetFactory {
 		} else if (setType.equalsIgnoreCase("HOH")) {
 			return new HandOverHandIntSet(initSize);
 		} else if (setType.equalsIgnoreCase("optimistic")) {
-			return new OptimisticIntSet();
+			return new OptimisticIntSet(initSize);
 		} 
 		return null;
 	}

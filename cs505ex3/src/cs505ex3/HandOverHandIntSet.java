@@ -1,8 +1,6 @@
 package cs505ex3;
 
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class HandOverHandIntSet implements IntSet {
 
@@ -14,7 +12,6 @@ public class HandOverHandIntSet implements IntSet {
     public HandOverHandIntSet() {
         Node.withLock = true;
         head = new Node();
-        //lock = new ReentrantLock();
         rand = new Random();
         size = 0;
     }
