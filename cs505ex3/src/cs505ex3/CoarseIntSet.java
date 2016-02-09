@@ -38,14 +38,15 @@ public class CoarseIntSet implements IntSet {
 			Node pred = head;
 			Node curr = head.next;
 			
-			while (curr != null && curr.value <= x) {
-				if (curr.value == x) {
-					return false;
-				}
+			while (curr != null && curr.value < x) {
 				pred = curr;
 				curr = curr.next;
 			}
-			
+
+			if (curr != null && curr.value == x) {
+				return false;
+			}
+
 			Node temp = new Node(x);
 			
 			temp.next = curr;
@@ -69,12 +70,12 @@ public class CoarseIntSet implements IntSet {
 			Node pred = head;
 			Node curr = head.next;
 			
-			while (curr != null && curr.value != x) {
+			while (curr != null && curr.value < x) {
 				pred = curr;
 				curr = curr.next;
 			}
 			
-			if (curr == null || curr.value != x) 
+			if (curr == null)
 				return false;
 			else if (curr.value == x) {
 				pred.next = curr.next;
@@ -100,11 +101,11 @@ public class CoarseIntSet implements IntSet {
 			
 			Node curr = head.next;
 			
-			while (curr != null && curr.value != x) {
+			while (curr != null && curr.value < x) {
 				curr = curr.next;
 			}
 			
-			if (curr == null || curr.value != x) 
+			if (curr == null)
 				return false;
 			else if (curr.value == x) {
 				return true;

@@ -9,7 +9,7 @@ public class Node {
 	public Node next;
 	
 	static public boolean withLock = false;
-	Lock lock = null;
+	private Lock lock = null;
 	
 	public Node() {
 		next = null;
@@ -22,4 +22,12 @@ public class Node {
 		this();
 		this.value = v;
 	}
+
+	public void lock() {
+        lock.lock();
+    }
+
+    public void unlock() {
+        lock.unlock();
+    }
 }

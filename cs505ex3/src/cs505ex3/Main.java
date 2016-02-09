@@ -8,8 +8,9 @@ public class Main {
 		
 		Options opt = new Options(args);
 		
-		IntSet iset = new CoarseIntSet(opt.getInitSize());
-		
+		//IntSet iset = new CoarseIntSet(opt.getInitSize());
+		IntSet iset = IntSetFactory.getIntSet(opt.getSetType(), opt.getInitSize());
+
 		ArrayList<TestWorker> workers = new ArrayList();
 		Stat stat = new Stat();
 		
@@ -54,9 +55,11 @@ public class Main {
 		
 		
 		System.out.println("Total: " + (stat.end - stat.start) + "ms\n" + stat.toString());
-		
-		System.out.println(stat.getAllOps() * 1000 / (stat.end - stat.start) + " ops/second"); 
-		System.out.println("set size: " + ((CoarseIntSet)iset).getSize() + " " + (opt.getInitSize() + stat.insertSuccess - stat.removeSuccess));
+
+        //System.out.println(stat.getAllOps());
+        //System.out.println(stat.end - stat.start);
+		System.out.println(stat.getAllOps() / ((stat.end - stat.start) / 1000) + " ops/second");
+		//System.out.println("set size: " + ((CoarseIntSet)iset).getSize() + " " + (opt.getInitSize() + stat.insertSuccess - stat.removeSuccess));
 	}
 
 }
