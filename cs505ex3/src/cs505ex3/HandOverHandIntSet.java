@@ -38,28 +38,29 @@ public class HandOverHandIntSet implements IntSet {
             if (curr != null)
                 curr.lock();
 
-            while (curr != null && curr.value < x) {
-                pred.unlock();
-                pred = curr;
-                curr = curr.next;
+            try {
+                while (curr != null && curr.value < x) {
+                    pred.unlock();
+                    pred = curr;
+                    curr = curr.next;
+                    if (curr != null)
+                        curr.lock();
+                }
+                if (curr != null && curr.value == x) {
+                    return false;
+                }
+                Node temp = new Node(x);
+
+                temp.next = curr;
+                pred.next = temp;
+
+                return true;
+            } finally {
                 if (curr != null)
-                    curr.lock();
+                    curr.unlock();
             }
-
-            if (curr != null && curr.value == x) {
-                return false;
-            }
-
-            Node temp = new Node(x);
-
-            temp.next = curr;
-            pred.next = temp;
-            //++size;
-            return true;
         } finally {
             pred.unlock();
-            if (curr != null)
-                curr.unlock();
         }
 	}
 
