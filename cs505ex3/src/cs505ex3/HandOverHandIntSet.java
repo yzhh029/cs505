@@ -32,12 +32,10 @@ public class HandOverHandIntSet implements IntSet {
 
         Node pred = head;
         Node curr = head.next;
-
         try {
 
             if (curr != null)
                 curr.lock();
-
             try {
                 while (curr != null && curr.value < x) {
                     pred.unlock();
@@ -75,31 +73,31 @@ public class HandOverHandIntSet implements IntSet {
             if (isEmpty()) {
                 return false;
             }
-
             curr.lock();
-            while (curr != null && curr.value < x) {
-                pred.unlock();
-                pred = curr;
-                curr = curr.next;
-                if (curr != null)
-                    curr.lock();
-            }
-
-            if (curr == null)
-                return false;
-            else if (curr.value == x) {
-                pred.next = curr.next;
-                curr.next = null;
-                //--size;
-                return true;
-            } else {
-                return false;
-            }
+            try {
+            	while (curr != null && curr.value < x) {
+                    pred.unlock();
+                    pred = curr;
+                    curr = curr.next;
+                    if (curr != null)
+                        curr.lock();
+                    else 
+                    	return false;
+                }
+                if (curr.value == x) {
+                    pred.next = curr.next;
+                    curr.next = null;
+                    //--size;
+                    return true;
+                } else {
+                    return false;
+                }
+            } finally {
+            	if (curr != null)
+            		curr.unlock();
+            }     
         } finally {
             pred.unlock();
-            if (curr != null) {
-                curr.unlock();
-            }
         }
 	}
 
@@ -113,18 +111,24 @@ public class HandOverHandIntSet implements IntSet {
                 return false;
 
             curr.lock();
-            while (curr != null && curr.value < x) {
-                pred.unlock();
-                pred = curr;
-                curr = curr.next;
-                if (curr != null)
-                    curr.lock();
+            
+            try {
+            	while (curr != null && curr.value < x) {
+                    pred.unlock();
+                    pred = curr;
+                    curr = curr.next;
+                    if (curr != null)
+                        curr.lock();
+                    else
+                    	return false;
+                }
+                return curr.value == x;
+            } finally {
+            	if (curr != null)
+                    curr.unlock();
             }
-            return curr != null && curr.value == x;
         } finally {
             pred.unlock();
-            if (curr != null)
-                curr.unlock();
         }
 	}
 
